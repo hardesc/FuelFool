@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Fuel Fool</title> 
+	<meta charset="utf-8" />
+	</head>
+	<body>
+	
+		<div id="map"></div>
+
+	
+		<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	
+	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.13.1/mapbox-gl.js'></script>
+	<script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.13.1/mapbox-gl.css' rel='stylesheet' />
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	
+	<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
+	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css' type='text/css' />
+	
+	
+		<label>city, state</label>
+		<input id="city" type="text" name="name_city" />
+		<input id="state" type="text" name="name_state" />
+		<button id="btn" onClick="get_LatLon()">Go!</button>
+		<br><br>
+		<label>Zip Code</label>
+		<br>
+		<input id="zip" type="text" name="zip_text" />
+	
+		<button id="btn" onClick="get_LatLon()">Go!</button>
+		
+		<br><br>
+		Enter either a City and State (not the abbreviation) <b>OR</b> a zip code.  If city,state AND zip code are entered, the zip will be ignored.
+
+
+
+	<script type="text/javascript">
+	
+		mapboxgl.accessToken = 'pk.eyJ1IjoibXVycmF5amEiLCJhIjoiY2lqcjlyeTQ2MDg3d3Rya29kcTE4dGJyZSJ9._3Gn3reYv7-VwplylDg44A';
+		var map = new mapboxgl.Map({
+			container: 'map', // container id
+			style: 'mapbox://styles/mapbox/streets-v8', //hosted style id
+			center: [-96.8, 37.8], // starting position
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			zoom: 3 // starting zoom
+		});
+		
+		var lon;
+		var lat;
+		function setLatLong(cent_LongLat)
+		{
+			lon = cent_LongLat[0];
+			lat = cent_LongLat[1];
+			var req = new XMLHttpRequest();
+			//XMLHttpRequest("GET", "fuel_fool.html?lat=" + lat + "&lon=" + lon, true);
+			window.location = 'fuel_fool_fullScreen.html?lat=' + lat + "&lon="+lon;
+		}
+		
+		function get_LatLon()
+		{
+			var city = document.getElementById("city").value;
+			var state = document.getElementById("state").value;
+			var zip = document.getElementById("zip").value;
+			
+			var geocoder_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+			
+			if(city == "" || state == "")
+			{
+				geocoder_URL += zip+'.json?country=us&access_token=' + mapboxgl.accessToken;
+			}
+			else
+			{
+				geocoder_URL += city+'+'+state+'.json?country=us&access_token=' + mapboxgl.accessToken;
+			}
+			
+				mapboxgl.util.getJSON(geocoder_URL, function(err, result) {
+					var cent_LongLat = result.features[0].center;
+					setLatLong(cent_LongLat);
+					});
+					
+			return false;
+		}
+	</script>
+	</body>
+</html>
