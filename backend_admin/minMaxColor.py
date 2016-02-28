@@ -65,12 +65,14 @@ print '(min,max) diesel price: '+min_diesel+'.'+max_diesel
 
 def write():
         
-	print('Creating new text file')
-        name = raw_input('Enter name of text file: ')+'.js'
+	print('Creating minMax.js')
+        #name = raw_input('Enter name of file: ')+'.js'
+	name = 'minMax.js'
 
 	try:
-            file = open(name,'w')
+            file = open(name,'w') #Overwrites the file if the file exists.
             #file.write('var reg_int='+str(reg_price_range)+';\n')
+            #use .join(map(str,) to create a string of all values in the array without printing vals in quotes
             file.write('var reg_int=['+",".join(map(str,reg_price_range))+'];\n')
             file.write('var mid_int=['+",".join(map(str,mid_price_range))+'];\n')
             file.write('var prem_int=['+",".join(map(str,prem_price_range))+'];\n')
@@ -82,12 +84,13 @@ def write():
         
 def merge_prices_topoJSON():
         print('Merging csv price file with zipcode topoJSON file \n')
-	csv_file = raw_input('Enter name of csv fuel price file: ')
-	input_json = raw_input('Enter name of zipcode topoJSON: ')
-	output_json = raw_input('Enter name of output file: ')
+	csv_file = raw_input('Enter name of csv fuel price file (including .csv): ')
+	input_json = raw_input('Enter name of zipcode topoJSON (including .json): ')
+	output_json = raw_input('Enter name of output file (including .json): ')
 
 	
 	try:
+                #use shell=True to pass the cmd line arg as a string (not seperating arguments)
            	p = subprocess.Popen('topojson -o '+output_json+' -e "'+csv_file+'" --id-property=zip -p name=name,state=state,zip=zip,reg=+reg,mid=+mid,prem=+prem,diesel=+diesel -- "'+input_json+'"', shell=True)
            	p.wait()
            	print 'Merge complete, closing....'
