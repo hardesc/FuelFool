@@ -1,0 +1,132 @@
+Table structure
+--------
+table geo:
+	zip
+	city
+	state
+	lat
+	long
+
+table fuel:
+	zip
+	low
+	mid
+	prem
+	diesel
+	
+table dbreak: This table calculates the breakpoints for the coloring of the map (max-min / 10).  These are the bottom of the buckets, can be changed to top easily
+	grade
+	one
+	two
+	...
+	ten
+
+
+
+
+PHP code to connect
+---------
+
+<?php
+
+$dbhost = 'oniddb.cws.oregonstate.edu';
+$dbname = 'erlandj-db';
+$dbuser = 'erlandj-db';
+$dbpass = 'uQi0vCngPWMWMdml';
+
+$mysql_handle = mysql_connect($dbhost, $dbuser, $dbpass)
+    or die("Error connecting to database server");
+
+mysql_select_db($dbname, $mysql_handle)
+    or die("Error selecting database: $dbname");
+
+echo 'Successfully connected to database!';
+
+mysql_close($mysql_handle);
+
+?>
+
+
+Update fuel from CSV  (not necessary if doing this in PHP Admin, can just load file and replace data in table using the GUI)
+------------
+
+CREATE TABLE tempfuel LIKE fuel;
+
+LOAD DATE LOCAL INFILE 'fuel.csv'
+INTO TABLE tempfuel
+FIELDS TERMINATED BY ','
+	ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+UPDATE fuel a
+INNER JOIN tempfuel b USING (zip)
+SET a.reg=b.reg, a.mid=b.mid, a.prem=b.prem, a.diesel=b.diesel;
+
+DROP TABLE tempfuel;
+
+
+
+SQL commands to update breakpoints for the map coloring
+----------
+
+
+REPLACE INTO dbreak (grade, one, two, three, four, five, six, seven, eight, nine, ten)
+SELECT 
+"prem" as grade,
+min(prem) as one,
+min(prem) + (.1*(max(prem)-min(prem))) as two,
+min(prem) + (.2*(max(prem)-min(prem))) as three,
+min(prem) + (.3*(max(prem)-min(prem))) as four,
+min(prem) + (.4*(max(prem)-min(prem))) as five,
+min(prem) + (.5*(max(prem)-min(prem))) as six,
+min(prem) + (.6*(max(prem)-min(prem))) as seven,
+min(prem) + (.7*(max(prem)-min(prem))) as eight,
+min(prem) + (.8*(max(prem)-min(prem))) as nine,
+min(prem) + (.9*(max(prem)-min(prem))) as ten
+from fuel
+
+REPLACE INTO dbreak (grade, one, two, three, four, five, six, seven, eight, nine, ten)
+SELECT 
+"low" as grade,
+min(low) as one,
+min(low) + (.1*(max(low)-min(low))) as two,
+min(low) + (.2*(max(low)-min(low))) as three,
+min(low) + (.3*(max(low)-min(low))) as four,
+min(low) + (.4*(max(low)-min(low))) as five,
+min(low) + (.5*(max(low)-min(low))) as six,
+min(low) + (.6*(max(low)-min(low))) as seven,
+min(low) + (.7*(max(low)-min(low))) as eight,
+min(low) + (.8*(max(low)-min(low))) as nine,
+min(low) + (.9*(max(low)-min(low))) as ten
+from fuel
+
+REPLACE INTO dbreak (grade, one, two, three, four, five, six, seven, eight, nine, ten)
+SELECT 
+"mid" as grade,
+min(mid) as one,
+min(mid) + (.1*(max(mid)-min(mid))) as two,
+min(mid) + (.2*(max(mid)-min(mid))) as three,
+min(mid) + (.3*(max(mid)-min(mid))) as four,
+min(mid) + (.4*(max(mid)-min(mid))) as five,
+min(mid) + (.5*(max(mid)-min(mid))) as six,
+min(mid) + (.6*(max(mid)-min(mid))) as seven,
+min(mid) + (.7*(max(mid)-min(mid))) as eight,
+min(mid) + (.8*(max(mid)-min(mid))) as nine,
+min(mid) + (.9*(max(mid)-min(mid))) as ten
+from fuel
+
+REPLACE INTO dbreak (grade, one, two, three, four, five, six, seven, eight, nine, ten)
+SELECT 
+"prem" as grade,
+min(prem) as one,
+min(prem) + (.1*(max(prem)-min(prem))) as two,
+min(prem) + (.2*(max(prem)-min(prem))) as three,
+min(prem) + (.3*(max(prem)-min(prem))) as four,
+min(prem) + (.4*(max(prem)-min(prem))) as five,
+min(prem) + (.5*(max(prem)-min(prem))) as six,
+min(prem) + (.6*(max(prem)-min(prem))) as seven,
+min(prem) + (.7*(max(prem)-min(prem))) as eight,
+min(prem) + (.8*(max(prem)-min(prem))) as nine,
+min(prem) + (.9*(max(prem)-min(prem))) as ten
+from fuel
