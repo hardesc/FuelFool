@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Fuel Fool</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		
+		<style type="text/css">
+			.mobileShow { display: none;}
+			   @media only screen and (min-device-width : 320px)and (max-device-width : 1024px){
+				.mobileShow { display: inline;}
+			   }
+		
+		   .mobileHide { display: inline;}
+			   @media only screen and (min-device-width : 320px) and (max-device-width : 1024px){
+				.mobileHide { display: none;}
+			}
+		</style>
+		
+		
+	</head>
+	<body>
+
+		<!-- Header -->
+			<section id="header">
+				<header>
+					<h1>Fuel Fool</h1>
+					<p>Average Fuel Prices</p>
+					<h2>Nationwide</h2>
+					<p></p>
+					<br>
+					<h2>Fuel Type:</h2>
+					<select id="grade">
+  						<option value="0">Regular</option>
+  						<option value="1">Midgrade</option>
+  						<option value="2">Premium</option>
+  						<option value="3">Diesel</option>
+					</select>
+					<br><br>
+					<h2>Enter City, State OR zip code</h2>
+
+					<input type="text" style="margin: 0 auto; align:left; text-align:center; width: 10em" style= required="" pattern="" 
+								value="" name="" id="user_query" list="" />
+							
+						</select>
+						<br><br>
+			          	<input type="submit" onClick="get_LatLon()" class="button style1" style="font-weight: 400; font-size: 1.25em; letter-spacing: 8px;" value="GO">
+					<br><br>
+		
+					<br>
+					<h2><u><em>Or</em></u></h2>
+					<br>
+					<input type="submit" onClick="showMap()" class="button style1" value="Search Map">
+					
+				</header>
+				
+			</section>
+
+			<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+				
+		<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	
+	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.13.1/mapbox-gl.js'></script>
+	<script src='https://api.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.13.1/mapbox-gl.css' rel='stylesheet' />
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	
+	<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.js'></script>
+	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css' type='text/css' />
+	
+			
+			<script type="text/javascript">
+	
+		mapboxgl.accessToken = 'pk.eyJ1IjoibXVycmF5amEiLCJhIjoiY2lqcjlyeTQ2MDg3d3Rya29kcTE4dGJyZSJ9._3Gn3reYv7-VwplylDg44A';
+	
+		var lon;
+		var lat;
+		function setLatLong(cent_LongLat)
+		{
+			lon = cent_LongLat[0];
+			lat = cent_LongLat[1];
+			
+			var grade = document.getElementById("grade").value;
+			
+			var req = new XMLHttpRequest();
+			//XMLHttpRequest("GET", "fuel_fool.html?lat=" + lat + "&lon=" + lon, true);
+			window.location = 'fuel_fool.html?grade='+grade+'&'+'lat=' + lat + '&lon='+lon;
+		}
+		
+		function get_LatLon()
+		{
+			var query = document.getElementById("user_query").value;
+			if(!query || query == "")
+			{
+				alert("Please enter a location")
+				return false;
+			}
+			
+			var geocoder_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+			
+			geocoder_URL += query+'.json?country=us&access_token=' + mapboxgl.accessToken;
+
+				mapboxgl.util.getJSON(geocoder_URL, function(err, result) {
+					if(result.features[0])
+					{
+						var cent_LongLat = result.features[0].center;
+						setLatLong(cent_LongLat);
+					}
+					else
+					{
+						alert("Can't locate: "+query);
+					}
+					
+					});
+					
+			return false;
+		}
+		
+		function showMap()
+		{
+			var grade = document.getElementById("grade").value;
+			window.location = 'fuel_fool.html?grade='+grade;
+		}
+	</script>
+
+	</body>
+</html>
