@@ -8,10 +8,18 @@
 <!--	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />  -->
+	<link rel='stylesheet' href='https://www.mapbox.com/base/latest/base.css?v1.0' type='text/css' />
 
 	<style>
         body { margin:0; padding:0; }
-        #map { position:absolute; top:10px; bottom:10px; left:10px; right:10px; border: 1px solid #00ffff;}
+       
+		
+		#map { position:absolute; top:10px; bottom:10px; left:150px; right:10px; border: 1px solid #00ffff;}
+
+		   @media (min-width:1335px){ #map { position:absolute; top:50px; bottom:10px; left:150px; right:10px; border: 1px solid #00ffff;}}
+		   @media (max-width:1334px){ #map { position:absolute; top:50px; bottom:10px; left:10px; right:10px; border: 1px solid #00ffff;}}
+
+
 		
 		h1 {
 		 text-decoration:none;
@@ -83,6 +91,17 @@
 		  background-color: #00FFFF;
 		  opacity: 0.99;
 		}
+		.ff-logo {
+			background: transparent url(./images/arial_40.png) no-repeat 0 0;
+			display: inline-block;
+			vertical-align: top;
+			height: 40px;
+			width: 225px;
+			text-indent: -999em;
+			overflow: hidden;
+			-webkit-background-size: 225px 80px;
+			background-size: 225px 80px;
+		}
 		
 		body {
 			padding: 0;
@@ -96,22 +115,46 @@
 </head>
 <body>
 
-
-
 		<div class="round doc clip fill-white keyline-all">
+			<!-- styling modified from https://www.mapbox.com/mapbox.js/example/v1.0.0/ 
+				uses https://www.mapbox.com/base/latest/base.css?v1.0 listed above
+			-->
+			<div class='masthead col12 clearfix fill-blue dark'>
+			  <div class='limiter clearfix'>
+				<nav class='col12 text-right navigation-padding-top contain animate clearfix noprint'>
+				  <a class='fl ff-logo' href='./index.html'></a>
+				  <!-- Desktop nav -->
+				  <div class='text-right z10 strong small primary hide-mobile space-top0'>
+					<div class='inline align-top'>
+					  <div class='inline fl'> <a href='./index.html'  class='primary-nav-button fl pad1x pad0y round quiet '>Home</a></div>
+					  <div class='inline fl'> <a href='http://www.mapbox.com/'   class='primary-nav-button fl pad1x pad0y round quiet '>Mapbox</a></div>
+					</div>
+					<!-- Hardcoded width so content doesn't jump -->
+					<div style='width:130px' class='unfloat inline align-top' id='nav'></div>
+				  </div>
+
+				  <!-- Mobile nav -->
+				  <div class='show-mobile contain dropdown-container pin-topright'>
+					
+						<div class='inline fl'>
+						  <a class='pad1 block strong col6' href='./index.html'>Home</a>
+						</div>
+					  </div>
+				</nav>
+			  </div>
+			</div>
+			
+
+			<!--</nav>	<nav class="fixed-nav-bar">
+				   Fixed navigation bar content -->
+				  
+				  <div id='geocoder-container'></div>
 				
-			<nav class="fixed-nav-bar">
-			  <!-- Fixed navigation bar content -->
-			  <h1><a href="index.html"></a></h1>
-			  <div id='geocoder-container'></div>
-			</nav>
-			
-			
 			<div id="map" class="mapboxgl-map"></div>
 			
 			<div class='legend-container'>
 				<div id='legend' class='legend'>
-					<h4>Fuel Price</h4>
+					<h4>Fuel Price<br>($/gallon)</h4>
 				</div>
 			</div>
 		</div>	
@@ -129,11 +172,11 @@
 	<script src='mapbox-gl-geocoder-master/dist/mapbox-gl-geocoder-modified.js'></script>
 	<script src='minMax.js'></script>
 	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v0.1.0/mapbox-gl-geocoder.css' type='text/css' />
-	
+
 	<style>
 		#geocoder-container {
 			position: absolute;
-			top: 0;
+			top: 40;
 			width: 100%;
 			margin-top: 10px;
 		}
@@ -142,7 +185,10 @@
 			min-width:25%;
 			margin-left:37.5%;
 		}
-</style>
+	</style>
+	
+
+<!---->	
 	
 	<script type="text/javascript">
 	
@@ -265,30 +311,11 @@
 		*/
 		
 		/*
-		Colors should also be externally determined.
+		colors from: https://github.com/mbostock/d3/blob/master/lib/colorbrewer/colorbrewer.js
+		
+		10 class PiYG:  
 		*/
-		var colors = [	'#fff7f3',
-			'#fde0dd',
-			'#fcc5c0',
-			'#fa9fb5',
-			'#f768a1',
-			'#dd3497',
-			'#ae017e',
-			'#7a0177',
-			'#49006a',
-			'#67001f'];
-			
-		/*
-		Intervals for color display of gas prices
-		
-		TODO:  This should be received from an external routine that is pre-run on data, prior to webpage load.
-		
-		once data is received, the data should be merged with the topoJSON file of zip codes, AND max, min, and intervals
-		should be determined.
-		*/
-		
-		//moved up for dynamic interval
-		//var breaks = [1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3];
+		var colors = ["#8e0152","#c51b7d","#de77ae","#f1b6da","#fde0ef","#e6f5d0","#b8e186","#7fbc41","#4d9221","#276419"];
 		
 		var layers;
 		
