@@ -324,7 +324,7 @@
 			map.addSource('vector-data', {
 				type: 'vector',
 				//url: 'mapbox://murrayja.8pyyrh0e'
-					url: 'mapbox://murrayja.70d5063c'
+				url: 'mapbox://murrayja.a4tld1ef'
 			});//end addSource()
 			
 			for(var p = 0; p < breaks.length; p++)
@@ -355,7 +355,7 @@
 					id: 'data-layer-'+p,
 					type: 'fill',
 					source: 'vector-data',
-					'source-layer': 'zips_prices_numbers_topoJSON', //this is the name of data layer in mapbox studio
+					'source-layer': 'original', //this is the name of data layer in mapbox studio
 					layout: {
 						visibility: 'visible'
 					},
@@ -393,7 +393,7 @@
 				"id": "zip-borders",
 				"type": "line",
 				source: 'vector-data',
-					'source-layer': 'zips_prices_numbers_topoJSON',
+					'source-layer': 'original',
 				"layout": {},
 				"paint": {
 					"line-color": "#627BC1",
@@ -408,7 +408,7 @@
 				id: 'zip-layer',
 				type: 'fill',
 				source: 'vector-data',
-				'source-layer': 'zips_prices_numbers_topoJSON',
+				'source-layer': 'original',
 				interactive: true,  //needed to be used with featuresAt()
 				layout: {},
 				paint: {
