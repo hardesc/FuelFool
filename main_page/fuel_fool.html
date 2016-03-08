@@ -122,7 +122,7 @@
 					<div class='inline align-top'>
 					  <div class='inline fl'> <a href='./index.html'  class='primary-nav-button fl pad1x pad0y round quiet '>Home</a></div>
 					  <div class='inline fl'> <a href='http://www.mapbox.com/'   class='primary-nav-button fl pad1x pad0y round quiet '>Mapbox</a></div>
-					  <div class='inline fl'> <a href='https://github.com/hardesc/FuelFool/blob/master/README.md'   class='primary-nav-button fl pad1x pad0y round quiet '>HELP</a></div>
+					  <div class='inline fl'> <a href='./help.html'   class='primary-nav-button fl pad1x pad0y round quiet '>HELP</a></div>
 					</div>
 					<!-- Hardcoded width so content doesn't jump -->
 					<div style='width:130px' class='unfloat inline align-top' id='nav'></div>
@@ -278,7 +278,6 @@
 		//add geocoder for searching new locations
 		var geocoder = new mapboxgl.Geocoder({
 			container: 'geocoder-container',
-			//position: "top-right",
 			country: "us"});
 		map.addControl(geocoder);
 		
@@ -317,13 +316,11 @@
 		
 		/*
 		Adding source
-		
 		-the source is a vector tile, created with Mapbox Studio (online)
 		*/
 		map.on('style.load', function () {
 			map.addSource('vector-data', {
 				type: 'vector',
-				//url: 'mapbox://murrayja.8pyyrh0e'
 				url: 'mapbox://murrayja.a4tld1ef'
 			});//end addSource()
 			
@@ -348,7 +345,8 @@
 				Add layer
 				
 				-source: the source of the layer data (from addSource() call above)
-				-source-layer: the source LAYER from the vector tile.  this is the name of the layer within map ID: murrayja.70d5063c (this is found in Mapbox Studio)
+				-source-layer: the source LAYER from the vector tile.  this is the name of the 
+				layer within map ID: murrayja.a4tld1ef (this is found in Mapbox Studio)
 
 				*/
 				map.addLayer({
@@ -366,7 +364,7 @@
 					filter: filters
 				});//end addLayer()
 				
-				// Build out legends
+				// Build legends
 				var item = document.createElement('div');
 
 				var key = document.createElement('span');
