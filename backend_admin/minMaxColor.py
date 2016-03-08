@@ -58,10 +58,10 @@ for i in range(0,10):
 	prem_price_range.append("%.2f" % (float(min_prem)+float(prem_int)*i))
 	diesel_price_range.append("%.2f" % (float(min_diesel)+float(diesel_int)*i))
 
-print '(min,max) regular price: '+min_reg+'.'+max_reg
-print '(min,max) mid price: '+min_mid+'.'+max_mid
-print '(min,max) premium price: '+min_prem+'.'+max_prem
-print '(min,max) diesel price: '+min_diesel+'.'+max_diesel	
+print '(min,max) regular price: '+min_reg+', '+max_reg
+print '(min,max) mid price: '+min_mid+', '+max_mid
+print '(min,max) premium price: '+min_prem+', '+max_prem
+print '(min,max) diesel price: '+min_diesel+', '+max_diesel	
 
 def write():
         
